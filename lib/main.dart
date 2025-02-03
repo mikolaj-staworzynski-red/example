@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
@@ -56,6 +57,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Timer? _timer;
+  int _remainingSeconds;
+
+  _MyHomePageState({int startSeconds = 100})
+      : _remainingSeconds = startSeconds {
+    _startCountdown();
+  }
+
+  void _startCountdown() {
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSecond, (Timer timer) {
+      if (_remainingSeconds <= 0) {
+        print('Timer cancel!');
+        setState(() {
+          timer.cancel();
+        });
+      } else {
+        print('Timer fire!');
+        setState(() {
+          _remainingSeconds--;
+          _counter = _remainingSeconds;
+        });
+      }
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
