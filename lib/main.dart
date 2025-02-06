@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 
 void main() {
@@ -63,6 +64,20 @@ class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState({int startSeconds = 100})
       : _remainingSeconds = startSeconds {
     _startCountdown();
+  }
+
+  void initState() {
+      super.initState();
+      HardwareKeyboard.instance.addHandler(_keyHandler);
+      RawKeyboard.instance.addListener(_handleKeyDown);
+  }
+  void _handleKeyDown(RawKeyEvent value) {
+      print("RawKeyboard: event: $value");
+  }
+  bool _keyHandler(event) {
+      
+      print("HardwareKeyboard: event: $event");
+      return true;
   }
 
   void _startCountdown() {
